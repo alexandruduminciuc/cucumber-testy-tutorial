@@ -1,34 +1,23 @@
 package org.fasttrackit.workshop.login;
 
-import com.sdl.selenium.web.utils.Utils;
-import cucumber.api.PendingException;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.fasttrackit.util.TestBase;
 import org.fasttrackit.util.TestBaseNative;
-import org.fasttrackit.workshop.pagefactory.login.LoginPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.PageFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class LoginSteps extends TestBaseNative {
+public class LoginSteps extends TestBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginSteps.class);
 
-    LoginPage loginPage;
+    private LoginView loginView = new LoginView();
 
-    public LoginSteps() {
-        initPage();
-    }
-
-    public void initPage() {
-        loginPage = PageFactory.initElements(driver, LoginPage.class);
-    }
 
     @Given("^I access the login page$")
     public void I_access_the_login_page() {
@@ -42,7 +31,7 @@ public class LoginSteps extends TestBaseNative {
 
     @When("^I click login button$")
     public void I_click_login_button() {
-        loginPage.clickOnLoginButton();
+        loginView.clickOnLoginButton();
     }
 
     @Then("^I check if user was logged in$")
@@ -63,22 +52,17 @@ public class LoginSteps extends TestBaseNative {
 
     @Then("^I expect invalid credential message$")
     public void I_Expect_invalid_credential_message() {
-        errorMessageShouldBePresent("Invalid user or password!");
-    }
-
-    private void errorMessageShouldBePresent(String expectedMessage) {
-        WebElement error = driver.findElement(By.className("error-msg"));
-        assertThat(error.getText(), is(expectedMessage));
+        loginView.errorMessageShouldBePresent("Invalid user or password!");
     }
 
     @When("^I enter \"([^\"]*)\"/\"([^\"]*)\" credentials$")
     public void I_enter_credentials(String emailValue, String passValue) {
-        loginPage.enterCredentials(emailValue, passValue);
+        loginView.enterCredentials(emailValue, passValue);
     }
 
     @Then("^I expect \"([^\"]*)\" error message$")
     public void I_expect_error_message(String expectedMessage) {
-        errorMessageShouldBePresent(expectedMessage);
+        loginView.errorMessageShouldBePresent(expectedMessage);
     }
 
     @Given("^I successfully login$")
