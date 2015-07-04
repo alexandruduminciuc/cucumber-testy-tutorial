@@ -1,10 +1,10 @@
 package org.fasttrackit.workshop.login;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.fasttrackit.util.TestBase;
+import org.fasttrackit.workshop.Menu.MainMenuView;
 import org.fasttrackit.workshop.Preferences.PreferencesView;
 
 /**
@@ -39,21 +39,24 @@ public class PreferencesSteps extends TestBase {
 
     @And("^I click on Save button$")
     public void I_click_on_Save_button(){
+        preferencesView.save();
     }
 
     @Then("^I should see \"([^\"]*)\" message$")
-    public void I_should_see_message(String arg1) {
+    public void I_should_see_message(String statusMessageEl) {
+
+        preferencesView.errorMessageShouldBePresent(statusMessageEl);
+        LoginSteps.VALID_PASSWORD = NEW_PASSWORD;
     }
 
     @And("^I close Preferences window$")
-    public void I_close_Preferences_window() throws Throwable {
-        // Express the Regexp above with the code you wish you had
-        throw new PendingException();
+    public void I_close_Preferences_window() {
+        preferencesView.close();
+
     }
 
-    @And("^I can relogin with new credentials$")
-    public void I_can_relogin_with_new_credentials() throws Throwable {
-        // Express the Regexp above with the code you wish you had
-        throw new PendingException();
+    @And("^I logout$")
+    public void I_logout() throws Throwable {
+        preferencesView.logout();
     }
 }

@@ -4,6 +4,10 @@ import com.sdl.selenium.web.WebLocator;
 import com.sdl.selenium.web.button.Button;
 import com.sdl.selenium.web.form.TextField;
 import com.sdl.selenium.web.utils.Utils;
+import org.fasttrackit.workshop.Menu.MainMenuView;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Created by Alex on 04.07.2015.
@@ -18,6 +22,7 @@ public class PreferencesView {
     private TextField confirmPassword = new TextField().setLabel("Repeat Password");
     private Button saveButton = new Button().setText("Save").setContainer(window);
     private Button closeButton = new Button().setText("Close").setContainer(window);
+    private WebLocator statusMessage = new WebLocator(window).setClasses("status-msg");
 
 //    public static void main(String[] args) {
 //
@@ -32,7 +37,7 @@ public class PreferencesView {
 
 
     public void open() {
-        preferencesButton.click();
+        MainMenuView.preferencesButton.click();
     }
 
     public void typeCurrentPassword(String password) {
@@ -51,4 +56,22 @@ public class PreferencesView {
         Utils.sleep(400);
     }
 
+    public void save() {
+        saveButton.assertClick();
+    }
+
+    public void errorMessageShouldBePresent(String expectedMessage) {
+        assertThat(statusMessage.getHtmlText(), is(expectedMessage));
+    }
+
+    public void close() {
+
+        closeButton.assertClick();
+        Utils.sleep(400);// window is fading
+    }
+
+    public void logout() {
+        MainMenuView.logoutLink.assertClick();
+
+    }
 }
